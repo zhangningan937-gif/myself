@@ -1,0 +1,360 @@
+/* =========================================================
+   题库 4/4：第 10–13 章（最佳接收、编码、伪随机、同步）
+   ========================================================= */
+
+window.QUIZ_BANK.push(
+
+/* ---------------- 第 10 章 最佳接收 ---------------- */
+{
+  id: 'q091', chapter: 'optimal', difficulty: '基础', tags: ['匹配滤波器'],
+  question: String.raw`匹配滤波器的冲激响应为（　）。`,
+  options: [
+    '$h(t)=s(t)$',
+    '$h(t)=s(T-t)$',
+    '$h(t)=s(-t)$',
+    '$h(t)=\delta(t-T)$',
+  ],
+  answer: 1,
+  explain: String.raw`$h(t)=s(T-t)$：把输入信号时间反转再平移 $T$。频域上是 $H(f)=S^*(f)e^{-j2\pi fT}$，即幅度与信号相同、相位共轭，使所有频率分量在 $t=T$ 同相叠加。这是「白噪声下输出信噪比最大」的滤波器。`,
+},
+{
+  id: 'q092', chapter: 'optimal', difficulty: '重点', tags: ['最大信噪比'],
+  question: String.raw`匹配滤波器的最大输出信噪比为（　）。`,
+  options: ['$E/N_0$', '$2E/N_0$', '$E/(2N_0)$', '$4E/N_0$'],
+  answer: 1,
+  explain: String.raw`$(S/N)_{\max}=2E/N_0$，$N_0$ 为单边功率谱密度。结论的关键在于：它只与信号能量 $E$ 有关，与波形形状无关。所以白噪声下换波形不能提高抗噪上限，只能改善带宽、PAPR 等其他指标。`,
+},
+{
+  id: 'q093', chapter: 'optimal', difficulty: '进阶', tags: ['匹配滤波', '自相关'],
+  question: String.raw`匹配滤波器的输出波形是输入信号的（　）。`,
+  options: [
+    '导数',
+    '自相关函数（平移后）',
+    '频谱',
+    '平方',
+  ],
+  answer: 1,
+  explain: String.raw`$s_o(t)=s(t)*s(T-t)=R_s(t-T)$，即自相关函数平移。所以矩形脉冲经匹配滤波后输出三角波，峰值在 $t=T$。这也解释了为什么匹配滤波能给出「最干净的峰值」——自相关在零时移处最大。`,
+},
+{
+  id: 'q094', chapter: 'optimal', difficulty: '重点', tags: ['最大似然', '最小距离'],
+  question: String.raw`加性高斯白噪声下，最佳接收机的判决准则是（　）。`,
+  options: [
+    '选择能量最大的波形',
+    '选择与接收信号欧氏距离最小的波形',
+    '选择先验概率最大的波形（与噪声无关）',
+    '选择频率最低的波形',
+  ],
+  answer: 1,
+  explain: String.raw`高斯噪声的似然函数是距离的指数函数，最大化似然等价于最小化 $\int(r-s_i)^2dt$，即最小欧氏距离。几何上就是「离哪个星座点最近判哪个」。等概时这就是最大似然；不等概时还要加先验偏置（MAP）。`,
+},
+{
+  id: 'q095', chapter: 'optimal', difficulty: '进阶', tags: ['误码率', '距离'],
+  question: String.raw`二进制最佳接收的误码率可写成 $P_e=Q\!\left(\dfrac{d}{\sqrt{2N_0}}\right)$，其中 $d$ 是（　）。`,
+  options: [
+    '码元周期',
+    '两个发送波形之间的欧氏距离',
+    '信号带宽',
+    '噪声功率',
+  ],
+  answer: 1,
+  explain: String.raw`$d^2=\int[s_1(t)-s_2(t)]^2dt$。距离越大，误码率越低。2PSK 的 $d=2\sqrt{E_b}$，2FSK 正交的 $d=\sqrt{2E_b}$，正好差 3 dB。这条公式把所有调制方式的性能比较统一成了「比距离」。`,
+},
+{
+  id: 'q096', chapter: 'optimal', difficulty: '基础', tags: ['2PSK', 'Eb/N0'],
+  question: String.raw`2PSK 最佳接收在 $E_b/N_0=9.6$ dB 时的误码率约为（　）。`,
+  options: ['$10^{-3}$', '$10^{-5}$', '$10^{-7}$', '$10^{-9}$'],
+  answer: 1,
+  explain: String.raw`9.6 dB 是 2PSK 达到 $10^{-5}$ 的经典数值（$Q(\sqrt{2\times9.1})\approx10^{-5}$）。相比香农限 $-1.59$ dB，差距约 11 dB，这就是编码增益的追求空间。这个数字常作为「未编码基准」出现在编码题里。`,
+},
+{
+  id: 'q097', chapter: 'optimal', difficulty: '进阶', tags: ['匹配滤波', '波形'],
+  question: String.raw`白噪声下，无论采用什么波形，匹配滤波器的最大输出信噪比都相同，这说明（　）。`,
+  options: [
+    '波形设计毫无意义',
+    '信噪比上限只由信号能量决定，波形设计只能改善带宽等其他指标',
+    '噪声可以完全消除',
+    '匹配滤波器只适用于矩形脉冲',
+  ],
+  answer: 1,
+  explain: String.raw`$(S/N)_{\max}=2E/N_0$ 只含能量，所以「换波形提高抗噪」在白噪声下不成立。但波形决定了带宽、PAPR、对定时误差的敏感度、多址正交性等，工程上仍然要精心设计（如升余弦、GMSK）。答题时别说「波形没用」。`,
+},
+{
+  id: 'q098', chapter: 'optimal', difficulty: '进阶', tags: ['相关接收'],
+  question: String.raw`相关接收机与匹配滤波接收机的关系是（　）。`,
+  options: [
+    '完全不同，不能互换',
+    '在抽样时刻输出相同，数学上等价',
+    '相关接收只能用于模拟信号',
+    '匹配滤波不需要抽样',
+  ],
+  answer: 1,
+  explain: String.raw`相关接收直接算 $\int_0^Tr(t)s_i(t)dt$，匹配滤波先卷积再在 $T$ 抽样，两者输出相同（差常数），可以互换实现。匹配滤波适合连续波形（雷达），相关接收适合逐符号判决（数字通信）。`,
+},
+{
+  id: 'q099', chapter: 'optimal', difficulty: '进阶', tags: ['有色噪声'],
+  question: String.raw`噪声为有色噪声时，最佳滤波器的频响应为（　）。`,
+  options: [
+    '$S^*(f)e^{-j2\pi fT}$',
+    '$\dfrac{S^*(f)e^{-j2\pi fT}}{P_n(f)}$',
+    '$P_n(f)S(f)$',
+    '$1/P_n(f)$',
+  ],
+  answer: 1,
+  explain: String.raw`先「白化」（除以噪声功率谱）再匹配，所以是 $S^*(f)e^{-j2\pi fT}/P_n(f)$。直观理解：噪声大的频率少给增益，噪声小的频率多给增益。白噪声时 $P_n(f)$ 为常数，退化为标准匹配滤波器。`,
+},
+
+/* ---------------- 第 11 章 差错控制编码 ---------------- */
+{
+  id: 'q100', chapter: 'coding', difficulty: '基础', tags: ['最小距离'],
+  question: String.raw`要纠正 $t$ 个错误，码的最小距离至少应为（　）。`,
+  options: ['$t+1$', '$2t$', '$2t+1$', '$t$'],
+  answer: 2,
+  explain: String.raw`纠 $t$ 个错要求 $d_{\min}\ge2t+1$：以码字为球心、半径 $t$ 的纠错球不能相交。检 $e$ 个错要求 $d_{\min}\ge e+1$；同时检 $e$ 纠 $t$ 要求 $d_{\min}\ge e+t+1$。三个式子一起记，考试常混着问。`,
+},
+{
+  id: 'q101', chapter: 'coding', difficulty: '基础', tags: ['汉明码'],
+  question: String.raw`(7,4) 汉明码能纠正的错误位数是（　）。`,
+  options: ['0 位', '1 位', '2 位', '3 位'],
+  answer: 1,
+  explain: String.raw`汉明码 $d_{\min}=3$，由 $2t+1\le3$ 得 $t=1$，只能纠 1 位错，同时能检出 2 位错。它的码率 $4/7$ 较高，但纠错能力有限。扩展汉明码加一位全校验可做到 $d_{\min}=4$（纠 1 检 2）。`,
+},
+{
+  id: 'q102', chapter: 'coding', difficulty: '进阶', tags: ['汉明码', '参数'],
+  question: String.raw`$m=4$ 的汉明码，其 $(n,k)$ 为（　）。`,
+  options: ['(7,4)', '(15,11)', '(15,4)', '(31,26)'],
+  answer: 1,
+  explain: String.raw`$n=2^m-1=15$，$k=n-m=15-4=11$，即 (15,11)。码率 $11/15\approx0.733$。汉明码的码率随 $m$ 增大趋近 1，但纠错能力始终是 1 位，所以长汉明码的编码增益提升有限。`,
+},
+{
+  id: 'q103', chapter: 'coding', difficulty: '重点', tags: ['伴随式'],
+  question: String.raw`线性分组码的伴随式 $\mathbf{S}=\mathbf{r}\mathbf{H}^T$ 只与（　）有关。`,
+  options: [
+    '发送的码字',
+    '错误图样',
+    '信噪比',
+    '码率',
+  ],
+  answer: 1,
+  explain: String.raw`因为 $\mathbf{r}=\mathbf{c}+\mathbf{e}$ 且 $\mathbf{c}\mathbf{H}^T=0$，所以 $\mathbf{S}=\mathbf{e}\mathbf{H}^T$，与发送码字无关。这正是译码可行的原因：只看伴随式就能定位错误，不需要知道发的是什么。汉明码里伴随式直接给出出错位编号。`,
+},
+{
+  id: 'q104', chapter: 'coding', difficulty: '基础', tags: ['生成矩阵'],
+  question: String.raw`线性分组码的生成矩阵 $\mathbf{G}$ 与校验矩阵 $\mathbf{H}$ 满足（　）。`,
+  options: [
+    '$\mathbf{G}\mathbf{H}^T=\mathbf{I}$',
+    '$\mathbf{G}\mathbf{H}^T=\mathbf{0}$',
+    '$\mathbf{G}=\mathbf{H}$',
+    '$\mathbf{G}\mathbf{H}=\mathbf{I}$',
+  ],
+  answer: 1,
+  explain: String.raw`$\mathbf{G}\mathbf{H}^T=\mathbf{0}$：$\mathbf{G}$ 的每一行（合法码字）都满足校验关系。系统码形式 $\mathbf{G}=[\mathbf{I}_k|\mathbf{P}]$、$\mathbf{H}=[\mathbf{P}^T|\mathbf{I}_r]$。这是构造和验证码字的基本关系，计算题必用。`,
+},
+{
+  id: 'q105', chapter: 'coding', difficulty: '进阶', tags: ['循环码'],
+  question: String.raw`循环码的生成多项式 $g(x)$ 必须满足（　）。`,
+  options: [
+    '整除 $x^n+1$',
+    '被 $x^n+1$ 整除',
+    '等于 $x^n+1$',
+    '次数为 $n$',
+  ],
+  answer: 0,
+  explain: String.raw`$g(x)$ 是 $x^n+1$ 的因式，次数为 $r=n-k$。所有码字都是 $g(x)$ 的倍式。编码时用 $x^rm(x)$ 除以 $g(x)$ 取余，译码时用接收多项式除以 $g(x)$ 看余式。这套「多项式除法」让循环码的编解码器极其简单。`,
+},
+{
+  id: 'q106', chapter: 'coding', difficulty: '基础', tags: ['CRC'],
+  question: String.raw`CRC 在实际系统中的主要用途是（　）。`,
+  options: ['纠错', '检错', '加密', '同步'],
+  answer: 1,
+  explain: String.raw`CRC 是循环码的特例，通常只用来检错，配合 ARQ 重传。以太网用 CRC-32，漏检概率约 $2^{-32}$。虽然循环码理论上有纠错能力，但 CRC 的 $d_{\min}$ 很小（通常 2 或 4），实际不做纠错。`,
+},
+{
+  id: 'q107', chapter: 'coding', difficulty: '进阶', tags: ['卷积码'],
+  question: String.raw`$(2,1,3)$ 卷积码编码器的状态数为（　）。`,
+  options: ['2', '4', '8', '16'],
+  answer: 1,
+  explain: String.raw`状态数 $=2^{k(N-1)}=2^{1\times(3-1)}=2^2=4$。$N$ 是约束长度，记忆长度 $N-1$。维特比译码的复杂度与状态数成正比，随 $N$ 指数增长，所以 $N$ 一般取 3–9。`,
+},
+{
+  id: 'q108', chapter: 'coding', difficulty: '进阶', tags: ['维特比'],
+  question: String.raw`维特比译码的本质是（　）。`,
+  options: [
+    '逐位硬判决',
+    '在网格图上搜索与接收序列距离最小的路径',
+    '频域滤波',
+    '反馈重传',
+  ],
+  answer: 1,
+  explain: String.raw`维特比用动态规划在网格图上找最大似然路径：每步对每个状态保留累计度量最小的幸存路径，丢弃其余。因为高斯噪声下最小欧氏距离等价最大似然，所以它是最优算法，复杂度随状态数线性增长。`,
+},
+{
+  id: 'q109', chapter: 'coding', difficulty: '基础', tags: ['交织'],
+  question: String.raw`交织技术主要用于对抗（　）。`,
+  options: ['随机错误', '突发错误', '高斯噪声', '载波频偏'],
+  answer: 1,
+  explain: String.raw`交织把数据按矩阵写入、按列读出，把时间上连续的突发错误打散成随机错误，再由卷积码/Turbo 码纠正。代价是时延和存储。移动通信、光盘、深空通信都必用，因为信道错误往往是突发的。`,
+},
+
+/* ---------------- 第 12 章 正交编码与伪随机 ---------------- */
+{
+  id: 'q110', chapter: 'pn', difficulty: '基础', tags: ['Walsh', '正交'],
+  question: String.raw`Walsh 码的主要性质是（　）。`,
+  options: [
+    '任意两个不同码字正交',
+    '自相关旁瓣为零',
+    '码字数量无限',
+    '在非同步时也保持正交',
+  ],
+  answer: 0,
+  explain: String.raw`Walsh 码由 Hadamard 矩阵的行构成，不同行内积为零（同步时）。它的自相关旁瓣较大，不适合做同步序列；多址时若用户不同步，正交性会被破坏。CDMA 下行用它区分信道，靠的是基站统一同步。`,
+},
+{
+  id: 'q111', chapter: 'pn', difficulty: '基础', tags: ['m序列', '周期'],
+  question: String.raw`$n$ 级线性反馈移位寄存器产生的 m 序列，其周期为（　）。`,
+  options: ['$2^n$', '$2^n-1$', '$2^{n-1}$', '$n^2$'],
+  answer: 1,
+  explain: String.raw`$N=2^n-1$，因为全零状态是死锁不能出现。前提是反馈抽头对应**本原多项式**，否则周期更短。例如 $n=3$ 取 $x^3+x+1$ 得周期 7；取错多项式可能只有 3 或 1。`,
+},
+{
+  id: 'q112', chapter: 'pn', difficulty: '进阶', tags: ['m序列', '自相关'],
+  question: String.raw`归一化后 m 序列的自相关旁瓣为（　）。`,
+  options: ['0', '$-1/N$', '$1/N$', '$-1/2$'],
+  answer: 1,
+  explain: String.raw`双值自相关：$\tau=0$ 时为 1，$\tau\ne0$ 时为 $-1/N$（$N$ 为周期）。旁瓣接近零且恒为负，主峰极其尖锐，所以 m 序列非常适合做同步和测距（GPS、雷达）。Gold 序列的互相关才是三值。`,
+},
+{
+  id: 'q113', chapter: 'pn', difficulty: '进阶', tags: ['m序列', '平衡性'],
+  question: String.raw`周期为 $N$ 的 m 序列一个周期内 1 的个数为（　）。`,
+  options: ['$N/2$', '$(N-1)/2$', '$(N+1)/2$', '$N$'],
+  answer: 2,
+  explain: String.raw`1 比 0 多一个：$(N+1)/2$ 个 1、$(N-1)/2$ 个 0。这保证了序列几乎没有直流偏置。游程特性也要记：长度 $k$ 的游程占 $1/2^k$，0 游程与 1 游程交替出现。`,
+},
+{
+  id: 'q114', chapter: 'pn', difficulty: '进阶', tags: ['Gold序列'],
+  question: String.raw`Gold 序列相对 m 序列的主要优势是（　）。`,
+  options: [
+    '自相关更好',
+    '同族序列多，互相关只有三个值且可控',
+    '周期更长',
+    '不需要同步',
+  ],
+  answer: 1,
+  explain: String.raw`Gold 序列由一对优选对 m 序列异或生成，共 $2^n+1$ 条，互相关只取 $\{-1,-t,t-2\}$ 三个值，多用户干扰可控。代价是自相关性能略差于 m 序列。GPS 的 C/A 码、WCDMA 扰码都用 Gold。`,
+},
+{
+  id: 'q115', chapter: 'pn', difficulty: '进阶', tags: ['处理增益'],
+  question: String.raw`DS-SS 系统码片速率 1.2288 Mcps、比特率 9.6 kb/s，处理增益约为（　）。`,
+  options: ['10 dB', '21 dB', '30 dB', '42 dB'],
+  answer: 1,
+  explain: String.raw`$G_p=10\lg(R_c/R_b)=10\lg(1.2288\times10^6/9.6\times10^3)=10\lg128\approx21$ dB。处理增益表示扩频带来的抗干扰能力：干扰被摊开，解扩后信噪比提升约 21 dB。这也是 CDMA 能「同频复用」的基础。`,
+},
+{
+  id: 'q116', chapter: 'pn', difficulty: '基础', tags: ['巴克码'],
+  question: String.raw`13 位巴克码的自相关旁瓣最大值为（　）。`,
+  options: ['0', '1', '3', '13'],
+  answer: 1,
+  explain: String.raw`巴克码的自相关主峰为 $n$，所有旁瓣绝对值不超过 1。13 位巴克码 1111100110101 是已知最长的奇数长度巴克码，常用于帧同步。旁瓣小意味着误判概率低，这是群同步选它的原因。`,
+},
+{
+  id: 'q117', chapter: 'pn', difficulty: '进阶', tags: ['LFSR', '全零状态'],
+  question: String.raw`m 序列发生器不能进入全零状态，原因是（　）。`,
+  options: [
+    '全零状态会输出全 1',
+    '全零是线性反馈的不动点，进去后无法跳出',
+    '全零状态会损坏电路',
+    '全零状态周期为 1，不影响结果',
+  ],
+  answer: 1,
+  explain: String.raw`线性反馈下，全零输入的下一状态仍是全零，形成死锁，会永久停在那里。所以实际电路要加「全零检测」强制置入一个非零初态。这也解释了周期为什么是 $2^n-1$ 而不是 $2^n$。`,
+},
+
+/* ---------------- 第 13 章 同步 ---------------- */
+{
+  id: 'q118', chapter: 'sync', difficulty: '基础', tags: ['平方环'],
+  question: String.raw`平方环提取载波的原理是（　）。`,
+  options: [
+    '对信号平方，产生 $2f_c$ 的离散分量再二分频',
+    '直接滤出 $f_c$ 分量',
+    '用包络检波取出载波',
+    '用差分编码消除载波',
+  ],
+  answer: 0,
+  explain: String.raw`2PSK 平方后 $\cos^2$ 产生 $2f_c$ 分量，且相位项变成 $2\varphi$，$\pi$ 的调制被抹平；滤出 $2f_c$ 再二分频得到 $f_c$。缺点是二分频有相位模糊（可能反相），必须用差分编码兜底。`,
+},
+{
+  id: 'q119', chapter: 'sync', difficulty: '进阶', tags: ['科斯塔斯环'],
+  question: String.raw`科斯塔斯环相对平方环的优势是（　）。`,
+  options: [
+    '没有相位模糊',
+    '工作在载频 $f_c$ 而非 $2f_c$，适合高频集成',
+    '不需要压控振荡器',
+    '可以直接解调 AM',
+  ],
+  answer: 1,
+  explain: String.raw`科斯塔斯环用 I/Q 两路正交相乘构成鉴相，VCO 直接工作在 $f_c$，不需要二分频，适合高频与集成；环路带宽可做窄，抗噪好。但它同样有相位模糊，且主要针对抑制载波的 BPSK/QPSK。`,
+},
+{
+  id: 'q120', chapter: 'sync', difficulty: '重点', tags: ['相位模糊'],
+  question: String.raw`解决载波同步中相位模糊问题的常用方法是（　）。`,
+  options: [
+    '提高发射功率',
+    '采用差分编码（如 2DPSK）',
+    '加大环路带宽',
+    '改用包络检波',
+  ],
+  answer: 1,
+  explain: String.raw`相位模糊是提取方法的固有多解性（可能锁在 $\varphi$ 或 $\varphi+\pi$），不能靠调环路消除。差分编码把信息放在相位差上，整体反相不影响判决，所以 2DPSK 天然免疫倒 π。这是「编码解决同步问题」的经典设计。`,
+},
+{
+  id: 'q121', chapter: 'sync', difficulty: '基础', tags: ['位同步'],
+  question: String.raw`位同步的目的是（　）。`,
+  options: [
+    '确定帧的起点',
+    '确定每个码元的最佳抽样时刻',
+    '恢复载波相位',
+    '实现网同步',
+  ],
+  answer: 1,
+  explain: String.raw`位同步（定时同步）给出码元边界，使接收端在眼图张开最大处抽样。群同步才是找帧起点，载波同步是恢复相位。三层同步的对象不同，简答题要分清：载波 → 位 → 群 → 网。`,
+},
+{
+  id: 'q122', chapter: 'sync', difficulty: '进阶', tags: ['早迟门'],
+  question: String.raw`早迟门位同步的工作原理是（　）。`,
+  options: [
+    '比较最佳抽样点前后两个样本的能量，误差信号驱动时钟',
+    '检测帧同步码',
+    '对信号平方取二倍频',
+    '用巴克码相关',
+  ],
+  answer: 0,
+  explain: String.raw`最佳抽样点在波形峰值，前后对称下降。早样本与迟样本的能量差就是「偏离峰值的方向和大小」，用它驱动 VCO 把时钟锁在峰值上。前提是波形（如升余弦）关于峰值对称，否则误差信号有偏。`,
+},
+{
+  id: 'q123', chapter: 'sync', difficulty: '基础', tags: ['群同步', '巴克码'],
+  question: String.raw`集中插入法群同步常用的同步码是（　）。`,
+  options: ['m 序列', '巴克码', 'Walsh 码', '格雷码'],
+  answer: 1,
+  explain: String.raw`巴克码自相关主峰为 $n$、旁瓣不超过 1，正确位置出现尖锐峰值，误判概率低。常用 7 位 1110010 或 13 位 1111100110101。m 序列自相关也好，但长度/数量受限，且多用于扩频而非帧同步。`,
+},
+{
+  id: 'q124', chapter: 'sync', difficulty: '进阶', tags: ['漏同步', '假同步'],
+  question: String.raw`降低假同步概率的常用方法是（　）。`,
+  options: [
+    '缩短同步码',
+    '连续多帧检测到同一位置才确认同步',
+    '提高发送功率',
+    '降低抽样率',
+  ],
+  answer: 1,
+  explain: String.raw`假同步是随机数据碰巧匹配同步码。用「连续 N 帧确认」的保护间隔可以指数级降低假同步概率，代价是捕获时间变长、漏同步风险略增。漏同步与假同步此消彼长，工程上按业务容忍度折中。`,
+},
+{
+  id: 'q125', chapter: 'sync', difficulty: '基础', tags: ['网同步'],
+  question: String.raw`我国电话网采用的网同步体制是（　）。`,
+  options: ['主从同步', '互同步', '准同步', '异步'],
+  answer: 0,
+  explain: String.raw`主从同步：全网锁定一个基准时钟（铯钟/北斗/GPS），简单可靠，但基准故障会影响全网。互同步无单点故障但稳定性分析复杂；准同步各用高稳时钟、定期滑码，独立但需要码速调整。三种体制的特点要能对比作答。`,
+}
+
+);

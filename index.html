@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" data-theme="auto">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>通信原理 · 学习台</title>
+<meta name="description" content="通信原理学习台：章节笔记、公式速查、Canvas 交互实验、题库与错题本，从模拟调制到差错控制一条链路学完。">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<link rel="stylesheet" href="assets/css/style.css?v=20261203">
+</head>
+<body>
+
+<div class="app" id="app">
+  <!-- ============ 顶栏 ============ -->
+  <header class="topbar">
+    <button class="icon-btn only-mobile" id="menuBtn" aria-label="打开菜单">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <a class="brand" href="#/home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32">
+          <path class="wave" d="M4 18c3.2 0 3.2-8 6.4-8s3.2 12 6.4 12 3.2-10 6.4-10 3.2 6 4.8 6" />
+          <circle cx="8" cy="10" r="1.6" class="dot"/><circle cx="24" cy="22" r="1.6" class="dot"/>
+        </svg>
+      </span>
+      <span class="brand-text"><b>通信原理</b><i>Principles of Communications</i></span>
+    </a>
+    <div class="topbar-right">
+      <button class="search-trigger" id="searchBtn" aria-label="搜索">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+        <span>搜索笔记、公式、题目</span>
+        <kbd>Ctrl K</kbd>
+      </button>
+      <button class="icon-btn" id="themeBtn" aria-label="切换主题" title="切换主题">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.2 8.2 0 1 1 9.5 4a6.6 6.6 0 0 0 10.5 10.5Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ 侧栏 ============ -->
+  <aside class="sidebar" id="sidebar">
+    <nav class="nav" aria-label="主导航">
+      <div class="nav-group">
+        <p class="nav-title">学习</p>
+        <a class="nav-link" href="#/home" data-route="home">
+          <svg viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5"/><path d="M6.5 10v9h11v-9"/></svg>概览
+        </a>
+        <a class="nav-link" href="#/notes" data-route="notes">
+          <svg viewBox="0 0 24 24"><path d="M5 4.5h11l3 3V19.5H5z"/><path d="M8.5 9h7M8.5 12.5h7M8.5 16h4"/></svg>章节笔记
+          <span class="nav-count" id="navNoteCount">0</span>
+        </a>
+        <a class="nav-link" href="#/cheatsheet" data-route="cheatsheet">
+          <svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="M9 9.5h6M9 13h6M9 16.5h3.5"/></svg>公式速查
+          <span class="nav-count" id="navFormulaCount">0</span>
+        </a>
+        <a class="nav-link" href="#/labs" data-route="labs">
+          <svg viewBox="0 0 24 24"><path d="M9 3.5h6M10 3.5v6L5.5 18a2 2 0 0 0 1.8 3h9.4a2 2 0 0 0 1.8-3L14 9.5v-6"/><path d="M8 14h8"/></svg>交互实验室
+          <span class="nav-count" id="navLabCount">0</span>
+        </a>
+      </div>
+      <div class="nav-group">
+        <p class="nav-title">练习</p>
+        <a class="nav-link" href="#/quiz" data-route="quiz">
+          <svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="m8.5 12 2.4 2.4 4.6-4.8"/></svg>题库
+          <span class="nav-count" id="navQuizCount">0</span>
+        </a>
+        <a class="nav-link" href="#/mistakes" data-route="mistakes">
+          <svg viewBox="0 0 24 24"><path d="M12 4.5 21 20H3z"/><path d="M12 10v4.2M12 17.2v.3"/></svg>错题本
+          <span class="nav-count nav-count--warn" id="navMistakeCount">0</span>
+        </a>
+        <a class="nav-link" href="#/progress" data-route="progress">
+          <svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="m7 15 3.5-4 3 2.5L20 7"/></svg>学习进度
+        </a>
+      </div>
+    </nav>
+
+    <div class="side-progress">
+      <div class="side-progress-head">
+        <span>整体进度</span><b id="sideProgressPct">0%</b>
+      </div>
+      <div class="bar"><i id="sideProgressBar" style="width:0%"></i></div>
+      <p class="side-progress-note" id="sideProgressNote">从第一节笔记开始吧</p>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <!-- ============ 主内容 ============ -->
+  <main class="main" id="view" tabindex="-1"></main>
+</div>
+
+<!-- ============ 搜索面板 ============ -->
+<div class="search-modal" id="searchModal" hidden>
+  <div class="search-box" role="dialog" aria-modal="true" aria-label="全站搜索">
+    <div class="search-input-row">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+      <input id="searchInput" type="search" placeholder="搜笔记标题、公式、题目关键词…" autocomplete="off">
+      <button class="icon-btn" id="searchClose" aria-label="关闭搜索">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<script src="assets/vendor/katex/katex.min.js?v=20261203"></script>
+<script src="assets/js/data-notes-1.js?v=20261203"></script>
+<script src="assets/js/data-notes-2.js?v=20261203"></script>
+<script src="assets/js/data-notes-3.js?v=20261203"></script>
+<script src="assets/js/data-formulas.js?v=20261203"></script>
+<script src="assets/js/data-quiz-1.js?v=20261203"></script>
+<script src="assets/js/data-quiz-2.js?v=20261203"></script>
+<script src="assets/js/data-quiz-3.js?v=20261203"></script>
+<script src="assets/js/data-quiz-4.js?v=20261203"></script>
+<script src="assets/js/markdown.js?v=20261203"></script>
+<script src="assets/js/lab.js?v=20261203"></script>
+<script src="assets/js/app.js?v=20261203"></script>
+</body>
+</html>
